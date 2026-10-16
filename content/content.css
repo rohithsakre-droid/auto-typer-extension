@@ -1,0 +1,576 @@
+/**
+ * AutoTyper Content Styles
+ * Scoped styles for target picker, bounding box, glowing badges, HUD, and floating widget
+ */
+
+/* Target Picker Highlight Overlay */
+.autotyper-picker-highlight {
+  position: absolute;
+  pointer-events: none;
+  z-index: 2147483640;
+  border: 2px solid #38bdf8;
+  background: rgba(56, 189, 248, 0.12);
+  border-radius: 6px;
+  box-shadow: 0 0 16px rgba(56, 189, 248, 0.4), inset 0 0 12px rgba(56, 189, 248, 0.2);
+  transition: all 0.08s ease-out;
+  animation: autotyper-pulse 1.8s infinite ease-in-out;
+}
+
+@keyframes autotyper-pulse {
+  0%, 100% { border-color: #38bdf8; box-shadow: 0 0 14px rgba(56, 189, 248, 0.45); }
+  50% { border-color: #818cf8; box-shadow: 0 0 20px rgba(129, 140, 248, 0.6); }
+}
+
+/* Picker Tag Badge */
+.autotyper-picker-badge {
+  position: absolute;
+  z-index: 2147483645;
+  background: #0f172a;
+  color: #38bdf8;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+  padding: 4px 10px;
+  border-radius: 6px;
+  border: 1px solid rgba(56, 189, 248, 0.4);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+  pointer-events: none;
+  white-space: nowrap;
+  transform: translateY(-4px);
+}
+
+/* Picker Top Banner */
+.autotyper-picker-banner {
+  position: fixed;
+  top: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 2147483646;
+  background: rgba(15, 23, 42, 0.95);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(56, 189, 248, 0.4);
+  border-radius: 9999px;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(255, 255, 255, 0.05);
+  padding: 10px 20px;
+  animation: autotyper-slide-down 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes autotyper-slide-down {
+  from { opacity: 0; transform: translate(-50%, -20px); }
+  to { opacity: 1; transform: translate(-50%, 0); }
+}
+
+.autotyper-picker-banner-content {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-size: 14px;
+  color: #f1f5f9;
+}
+
+.autotyper-picker-icon {
+  font-size: 16px;
+}
+
+.autotyper-picker-text {
+  font-weight: 500;
+}
+
+.autotyper-picker-kbd {
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 4px;
+  padding: 2px 7px;
+  font-size: 11px;
+  font-weight: 700;
+  color: #94a3b8;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+}
+
+body.autotyper-picking-active * {
+  cursor: crosshair !important;
+}
+
+/* ==========================================================================
+   Floating HUD & Full Widget
+   ========================================================================== */
+.autotyper-floating-widget {
+  position: fixed;
+  z-index: 2147483647;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  font-size: 13px;
+  color: #f8fafc;
+  line-height: 1.4;
+  user-select: none;
+  box-sizing: border-box;
+}
+
+.autotyper-floating-widget *,
+.autotyper-floating-widget *::before,
+.autotyper-floating-widget *::after {
+  box-sizing: border-box;
+}
+
+.autotyper-hidden {
+  display: none !important;
+}
+
+/* Card Shell */
+.autotyper-widget-card {
+  background: rgba(15, 23, 42, 0.94);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 14px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(255, 255, 255, 0.05);
+  overflow: hidden;
+  transition: box-shadow 0.2s ease;
+}
+
+.autotyper-hud-card {
+  width: 320px;
+}
+
+.autotyper-full-card {
+  width: 380px;
+}
+
+/* Header */
+.autotyper-widget-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 14px;
+  background: rgba(30, 41, 59, 0.6);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  cursor: grab;
+}
+
+.autotyper-widget-header:active {
+  cursor: grabbing;
+}
+
+.autotyper-header-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.autotyper-logo-dot {
+  width: 8px;
+  height: 8px;
+  background: #38bdf8;
+  border-radius: 50%;
+  box-shadow: 0 0 8px #38bdf8;
+  animation: autotyper-glow 1.5s infinite alternate;
+}
+
+@keyframes autotyper-glow {
+  from { opacity: 0.6; transform: scale(0.9); }
+  to { opacity: 1; transform: scale(1.2); }
+}
+
+.autotyper-logo-icon {
+  font-size: 15px;
+}
+
+.autotyper-title {
+  font-weight: 600;
+  font-size: 13px;
+  color: #f1f5f9;
+}
+
+.autotyper-status-badge {
+  font-size: 10px;
+  font-weight: 600;
+  padding: 2px 6px;
+  border-radius: 9999px;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+}
+
+.autotyper-badge-typing {
+  background: rgba(56, 189, 248, 0.15);
+  color: #38bdf8;
+  border: 1px solid rgba(56, 189, 248, 0.3);
+}
+
+.autotyper-badge-done {
+  background: rgba(34, 197, 94, 0.15);
+  color: #4ade80;
+  border: 1px solid rgba(34, 197, 94, 0.3);
+}
+
+.autotyper-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.autotyper-icon-btn {
+  background: transparent;
+  border: none;
+  color: #94a3b8;
+  width: 22px;
+  height: 22px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.autotyper-icon-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: #f8fafc;
+}
+
+/* HUD Body */
+.autotyper-hud-body {
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* Progress bar */
+.autotyper-progress-container {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.autotyper-progress-bar {
+  width: 100%;
+  height: 7px;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 9999px;
+  overflow: hidden;
+}
+
+.autotyper-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #6366f1, #38bdf8);
+  border-radius: 9999px;
+  transition: width 0.08s ease-out;
+  box-shadow: 0 0 10px rgba(56, 189, 248, 0.5);
+}
+
+.autotyper-progress-meta {
+  display: flex;
+  justify-content: space-between;
+  font-size: 11px;
+  color: #94a3b8;
+}
+
+.autotyper-speed-val {
+  color: #38bdf8;
+}
+
+/* Live Speed Slider */
+.autotyper-live-speed-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255, 255, 255, 0.04);
+  padding: 6px 10px;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.autotyper-slider-label {
+  font-size: 11px;
+  font-weight: 500;
+  color: #cbd5e1;
+  white-space: nowrap;
+}
+
+.autotyper-hud-slider,
+.autotyper-full-slider {
+  flex: 1;
+  -webkit-appearance: none;
+  appearance: none;
+  height: 5px;
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 4px;
+  outline: none;
+  cursor: pointer;
+}
+
+.autotyper-hud-slider::-webkit-slider-thumb,
+.autotyper-full-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #38bdf8;
+  cursor: pointer;
+  box-shadow: 0 0 6px #38bdf8;
+  transition: transform 0.1s;
+}
+
+.autotyper-hud-slider::-webkit-slider-thumb:hover,
+.autotyper-full-slider::-webkit-slider-thumb:hover {
+  transform: scale(1.2);
+}
+
+.autotyper-slider-display {
+  font-size: 11px;
+  font-weight: 600;
+  color: #38bdf8;
+  min-width: 44px;
+  text-align: right;
+  font-family: ui-monospace, SFMono-Regular, monospace;
+}
+
+/* Controls */
+.autotyper-hud-controls {
+  display: flex;
+  gap: 8px;
+}
+
+.autotyper-btn {
+  flex: 1;
+  padding: 7px 12px;
+  border-radius: 7px;
+  font-size: 12px;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  transition: all 0.15s;
+}
+
+.autotyper-btn-pause-resume {
+  background: rgba(255, 255, 255, 0.1);
+  color: #f8fafc;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.autotyper-btn-pause-resume:hover {
+  background: rgba(255, 255, 255, 0.18);
+}
+
+.autotyper-btn-resuming {
+  background: rgba(56, 189, 248, 0.2);
+  color: #38bdf8;
+  border-color: rgba(56, 189, 248, 0.4);
+}
+
+.autotyper-btn-stop {
+  background: rgba(239, 68, 68, 0.18);
+  color: #f87171;
+  border: 1px solid rgba(239, 68, 68, 0.3);
+}
+
+.autotyper-btn-stop:hover {
+  background: rgba(239, 68, 68, 0.3);
+  color: #fca5a5;
+}
+
+/* Full Widget Layout */
+.autotyper-full-body {
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.autotyper-field-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.autotyper-field-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 12px;
+  font-weight: 500;
+  color: #94a3b8;
+}
+
+.autotyper-field-actions {
+  display: flex;
+  gap: 6px;
+}
+
+.autotyper-mini-btn {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #cbd5e1;
+  font-size: 11px;
+  padding: 2px 7px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.autotyper-mini-btn:hover {
+  background: rgba(255, 255, 255, 0.15);
+  color: #fff;
+}
+
+.autotyper-code-input {
+  width: 100%;
+  background: rgba(10, 15, 29, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 8px;
+  padding: 10px;
+  color: #f8fafc;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 12px;
+  line-height: 1.5;
+  resize: vertical;
+  min-height: 110px;
+  max-height: 280px;
+  outline: none;
+}
+
+.autotyper-code-input:focus {
+  border-color: #38bdf8;
+  box-shadow: 0 0 10px rgba(56, 189, 248, 0.3);
+}
+
+.autotyper-char-count {
+  font-size: 10px;
+  color: #64748b;
+  text-align: right;
+  font-family: ui-monospace, SFMono-Regular, monospace;
+}
+
+/* Speed section */
+.autotyper-speed-section {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  background: rgba(255, 255, 255, 0.03);
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.autotyper-speed-header {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+  font-weight: 500;
+  color: #cbd5e1;
+}
+
+.autotyper-speed-preset-val {
+  color: #38bdf8;
+  font-weight: 600;
+  font-family: ui-monospace, SFMono-Regular, monospace;
+}
+
+.autotyper-presets-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px;
+}
+
+.autotyper-preset-chip {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #94a3b8;
+  font-size: 11px;
+  font-weight: 500;
+  padding: 5px 8px;
+  border-radius: 6px;
+  cursor: pointer;
+  text-align: center;
+  transition: all 0.15s;
+}
+
+.autotyper-preset-chip:hover {
+  background: rgba(255, 255, 255, 0.12);
+  color: #f1f5f9;
+}
+
+.autotyper-chip-active {
+  background: rgba(56, 189, 248, 0.2);
+  color: #38bdf8;
+  border-color: rgba(56, 189, 248, 0.4);
+  font-weight: 600;
+}
+
+/* Options */
+.autotyper-options-row {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.autotyper-checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11px;
+  color: #94a3b8;
+  cursor: pointer;
+}
+
+.autotyper-checkbox-label input[type="checkbox"] {
+  accent-color: #38bdf8;
+  cursor: pointer;
+}
+
+/* Action Buttons */
+.autotyper-action-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+.autotyper-main-btn {
+  background: linear-gradient(135deg, #6366f1, #38bdf8);
+  color: #ffffff;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 14px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  box-shadow: 0 4px 14px rgba(99, 102, 241, 0.4);
+  transition: all 0.15s ease;
+}
+
+.autotyper-main-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 18px rgba(99, 102, 241, 0.55);
+}
+
+.autotyper-secondary-btn {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: #f1f5f9;
+  border-radius: 8px;
+  padding: 8px 14px;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: all 0.15s;
+}
+
+.autotyper-secondary-btn:hover {
+  background: rgba(255, 255, 255, 0.14);
+}

@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AutoTyper Test Arena - LeetCode & Code Editor Simulator</title>
+  <style>
+    :root {
+      --bg: #0d1117;
+      --card-bg: #161b22;
+      --border: #30363d;
+      --accent: #58a6ff;
+      --text: #c9d1d9;
+      --text-bright: #f0f6fc;
+      --success: #3fb950;
+      --font-mono: 'JetBrains Mono', 'Fira Code', ui-monospace, Menlo, Monaco, Consolas, monospace;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      padding: 30px;
+      line-height: 1.5;
+    }
+
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    header {
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    h1 {
+      font-size: 24px;
+      color: var(--text-bright);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .badge {
+      font-size: 11px;
+      background: rgba(88, 166, 255, 0.15);
+      color: var(--accent);
+      border: 1px solid rgba(88, 166, 255, 0.3);
+      padding: 3px 8px;
+      border-radius: 9999px;
+      font-weight: 600;
+    }
+
+    .info-banner {
+      background: rgba(56, 189, 248, 0.08);
+      border: 1px solid rgba(56, 189, 248, 0.25);
+      border-radius: 10px;
+      padding: 14px 18px;
+      font-size: 13px;
+      color: #93c5fd;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+
+    @media (max-width: 800px) {
+      .grid { grid-template-columns: 1fr; }
+    }
+
+    .card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .card-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text-bright);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .editor-wrapper {
+      position: relative;
+      background: #090d16;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    .editor-textarea {
+      width: 100%;
+      height: 180px;
+      background: transparent;
+      border: none;
+      color: #e6edf3;
+      font-family: var(--font-mono);
+      font-size: 13px;
+      padding: 12px;
+      outline: none;
+      resize: vertical;
+      line-height: 1.6;
+    }
+
+    /* Simulated Monaco Editor */
+    .monaco-editor {
+      position: relative;
+      background: #1e1e1e;
+      border: 1px solid #3c3c3c;
+      border-radius: 8px;
+      height: 200px;
+      display: flex;
+      overflow: hidden;
+    }
+
+    .monaco-gutter {
+      width: 44px;
+      background: #1e1e1e;
+      border-right: 1px solid #2d2d2d;
+      color: #858585;
+      font-family: var(--font-mono);
+      font-size: 12px;
+      line-height: 20px;
+      padding-top: 10px;
+      text-align: right;
+      padding-right: 10px;
+      user-select: none;
+    }
+
+    .monaco-content-area {
+      flex: 1;
+      position: relative;
+      padding: 10px;
+      overflow-y: auto;
+    }
+
+    .monaco-editor textarea.inputarea {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      width: calc(100% - 20px);
+      height: calc(100% - 20px);
+      background: transparent;
+      color: #d4d4d4;
+      border: none;
+      outline: none;
+      font-family: var(--font-mono);
+      font-size: 13px;
+      line-height: 20px;
+      resize: none;
+      white-space: pre;
+    }
+
+    /* ContentEditable area */
+    .contenteditable-box {
+      min-height: 140px;
+      padding: 12px;
+      background: #090d16;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      font-family: var(--font-mono);
+      font-size: 13px;
+      color: #f0f6fc;
+      outline: none;
+      white-space: pre-wrap;
+    }
+
+    .contenteditable-box:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 10px rgba(88, 166, 255, 0.2);
+    }
+
+    /* Live Keystroke Inspector */
+    .inspector-card {
+      grid-column: 1 / -1;
+    }
+
+    .metrics-bar {
+      display: flex;
+      gap: 20px;
+      background: #090d16;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 12px 18px;
+      font-family: var(--font-mono);
+      font-size: 13px;
+    }
+
+    .metric-item {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .metric-label {
+      font-size: 11px;
+      color: #8b949e;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .metric-value {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--success);
+    }
+
+    .event-log-box {
+      height: 160px;
+      background: #090d16;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 10px;
+      overflow-y: auto;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: #8b949e;
+      display: flex;
+      flex-direction: column-reverse;
+      gap: 4px;
+    }
+
+    .log-entry {
+      display: flex;
+      gap: 10px;
+    }
+
+    .log-time { color: #484f58; }
+    .log-type { color: #a5d6ff; font-weight: 600; min-width: 80px; }
+    .log-key { color: #7ee787; }
+    .log-code { color: #d2a8ff; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div>
+        <h1>⚡ AutoTyper Test Arena <span class="badge">Live Testbed</span></h1>
+        <p style="font-size: 13px; color: #8b949e; margin-top: 4px;">Test your AutoTyper Chrome Extension against simulated Monaco, LeetCode, Textareas, and Rich text.</p>
+      </div>
+      <div>
+        <button id="btn-clear-all" style="background: rgba(255,255,255,0.08); border: 1px solid var(--border); color: #fff; padding: 6px 14px; border-radius: 6px; cursor: pointer; font-size: 12px;">🧹 Clear All Editors</button>
+      </div>
+    </header>
+
+    <div class="info-banner">
+      💡 <b>How to Test:</b> Click the AutoTyper extension icon in Chrome toolbar (or press <kbd>Alt+Shift+W</kbd>), click <b>"✨ Demo"</b> to load Python code, select a speed (e.g. <b>⚡ Turbo 1ms</b> or <b>🚀 Super 8ms</b>), and click <b>"🎯 Pick Target & Start Typing"</b>. Hover over any editor below and click!
+    </div>
+
+    <div class="grid">
+      <!-- 1. Simulated Monaco Editor (LeetCode structure) -->
+      <div class="card">
+        <div class="card-header">
+          <span class="card-title">💻 Monaco Code Editor (LeetCode Structure)</span>
+          <span class="badge">Monaco DOM</span>
+        </div>
+        <div class="monaco-editor">
+          <div class="monaco-gutter">1<br>2<br>3<br>4<br>5<br>6<br>7<br>8<br>9<br>10</div>
+          <div class="monaco-content-area">
+            <textarea class="inputarea" placeholder="// Click here or select with AutoTyper to test Monaco typing..."></textarea>
+          </div>
+        </div>
+      </div>
+
+      <!-- 2. Standard Textarea Code Editor -->
+      <div class="card">
+        <div class="card-header">
+          <span class="card-title">📄 Standard Code Textarea</span>
+          <span class="badge">&lt;textarea&gt;</span>
+        </div>
+        <div class="editor-wrapper">
+          <textarea id="target-textarea" class="editor-textarea" placeholder="Standard HTML textarea editor target..."></textarea>
+        </div>
+      </div>
+
+      <!-- 3. Rich Text ContentEditable Editor -->
+      <div class="card">
+        <div class="card-header">
+          <span class="card-title">✏️ ContentEditable Code Area</span>
+          <span class="badge">contenteditable</span>
+        </div>
+        <div id="target-contenteditable" class="contenteditable-box" contenteditable="true" data-placeholder="ContentEditable target..."></div>
+      </div>
+
+      <!-- 4. Text Input Field -->
+      <div class="card">
+        <div class="card-header">
+          <span class="card-title">💬 Single Line Text Input</span>
+          <span class="badge">&lt;input&gt;</span>
+        </div>
+        <div style="padding-top: 10px;">
+          <input type="text" id="target-input" style="width: 100%; padding: 12px; background: #090d16; border: 1px solid var(--border); border-radius: 8px; color: #fff; font-family: var(--font-mono); font-size: 13px;" placeholder="Single line input for testing...">
+        </div>
+      </div>
+    </div>
+
+    <!-- Live Keystroke Inspector Card -->
+    <div class="card inspector-card">
+      <div class="card-header">
+        <span class="card-title">🔍 Real-Time Keystroke Inspector (Verifies Real Events, Not Paste!)</span>
+        <button id="btn-clear-logs" style="background: transparent; border: none; color: var(--accent); font-size: 12px; cursor: pointer;">Clear Logs</button>
+      </div>
+
+      <div class="metrics-bar">
+        <div class="metric-item">
+          <span class="metric-label">Keystrokes Count</span>
+          <span id="keystroke-count" class="metric-value">0</span>
+        </div>
+        <div class="metric-item">
+          <span class="metric-label">Current Speed</span>
+          <span id="typing-rate" class="metric-value">0 chars/sec</span>
+        </div>
+        <div class="metric-item">
+          <span class="metric-label">Last Key Detected</span>
+          <span id="last-key" class="metric-value" style="color: #58a6ff;">-</span>
+        </div>
+        <div class="metric-item">
+          <span class="metric-label">Input Verification</span>
+          <span id="event-verification" class="metric-value" style="color: #3fb950; font-size: 15px;">Awaiting keystrokes...</span>
+        </div>
+      </div>
+
+      <div id="event-log-box" class="event-log-box">
+        <div class="log-entry" style="color: #484f58;">Event stream will appear here when typing starts...</div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let keystrokeCount = 0;
+    let lastTime = Date.now();
+    let speedSamples = [];
+
+    const countEl = document.getElementById('keystroke-count');
+    const rateEl = document.getElementById('typing-rate');
+    const lastKeyEl = document.getElementById('last-key');
+    const verifyEl = document.getElementById('event-verification');
+    const logBox = document.getElementById('event-log-box');
+
+    function logEvent(type, e) {
+      keystrokeCount++;
+      countEl.textContent = keystrokeCount;
+
+      const now = Date.now();
+      const dt = now - lastTime;
+      lastTime = now;
+      if (dt > 0 && dt < 2000) {
+        const rate = Math.round(1000 / dt);
+        rateEl.textContent = `${rate} chars/sec`;
+      }
+
+      lastKeyEl.textContent = e.key === ' ' ? 'Space' : (e.key === '\n' || e.key === 'Enter' ? 'Enter' : (e.key || e.data || '-'));
+      verifyEl.innerHTML = '✅ Keystroke Events Active';
+
+      const entry = document.createElement('div');
+      entry.className = 'log-entry';
+      const timeStr = new Date().toISOString().substring(17, 23);
+      entry.innerHTML = `
+        <span class="log-time">[${timeStr}]</span>
+        <span class="log-type">${type}</span>
+        <span class="log-key">key: "${e.key || e.data || ''}"</span>
+        <span class="log-code">code: ${e.code || ''} (which: ${e.which || e.keyCode || 0})</span>
+      `;
+
+      logBox.insertBefore(entry, logBox.firstChild);
+      if (logBox.children.length > 50) {
+        logBox.removeChild(logBox.lastChild);
+      }
+    }
+
+    // Monitor events across all target editors
+    ['keydown', 'beforeinput', 'input'].forEach(evt => {
+      document.addEventListener(evt, (e) => {
+        // Skip typing in our own buttons/inputs if needed
+        if (e.target.id === 'btn-clear-all' || e.target.id === 'btn-clear-logs') return;
+        if (evt === 'keydown') {
+          logEvent('keydown', e);
+        }
+      }, true);
+    });
+
+    document.getElementById('btn-clear-logs').addEventListener('click', () => {
+      logBox.innerHTML = '';
+      keystrokeCount = 0;
+      countEl.textContent = '0';
+      rateEl.textContent = '0 chars/sec';
+      lastKeyEl.textContent = '-';
+      verifyEl.textContent = 'Awaiting keystrokes...';
+    });
+
+    document.getElementById('btn-clear-all').addEventListener('click', () => {
+      document.querySelectorAll('textarea').forEach(t => t.value = '');
+      document.querySelectorAll('[contenteditable]').forEach(c => c.textContent = '');
+      document.querySelectorAll('input[type="text"]').forEach(i => i.value = '');
+    });
+  </script>
+</body>
+</html>

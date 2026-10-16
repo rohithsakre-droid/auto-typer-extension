@@ -1,0 +1,26 @@
+/* AutoTyper Sidepanel specific layout */
+body {
+  width: 100% !important;
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+}
+
+.sidepanel-container {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  padding: 16px;
+  box-sizing: border-box;
+}
+
+.sidepanel-container .app-main {
+  flex: 1;
+  overflow-y: auto;
+  padding-right: 4px;
+}
+
+.sidepanel-textarea {
+  min-height: 160px;
+  max-height: 400px;
+}

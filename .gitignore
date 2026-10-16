@@ -1,0 +1,11 @@
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Node / temporary files
+node_modules/
+*.log
+
+# Local builds / zips
+*.zip
